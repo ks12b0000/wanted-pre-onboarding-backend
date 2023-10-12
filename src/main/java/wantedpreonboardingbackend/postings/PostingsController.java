@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +26,10 @@ public class PostingsController {
             @ApiResponse(responseCode = "200", description = "채용 공고 등록에 성공했습니다.")
     })
     @Tag(name = "Postings")
-    @PostMapping("/api/postings/save")
-    public BaseResponse postingsSave(@Validated(ValidationSequence.class) @RequestBody PostingsWriteRequest request) {
+    @PostMapping("/api/postings/save/{userId}")
+    public BaseResponse postingsSave(@PathVariable Long userId, @Validated(ValidationSequence.class) @RequestBody PostingsWriteRequest request) {
 
-        postingsService.postingsSave(request);
+        postingsService.postingsSave(userId, request);
 
         return new BaseResponse("채용 공고 등록에 성공했습니다.");
     }

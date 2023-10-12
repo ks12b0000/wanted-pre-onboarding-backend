@@ -26,12 +26,12 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 등록 테스트")
     void postingsSave() throws Exception {
         // given
-        // company 데이터 1개 직접 저장 시켜놔서 테스트 가능.
+        // company 데이터 1개, user 데이터 1개 직접 저장 시켜놔서 테스트 가능.
         PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
         String content = new ObjectMapper().writeValueAsString(request);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/api/postings/save")
+        ResultActions resultActions = mvc.perform(post("/api/postings/save/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
                 .accept(MediaType.APPLICATION_JSON)
@@ -48,12 +48,12 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 등록 실패 테스트")
     void postingsSaveFail() throws Exception {
         // given
-        // company 데이터 1개 직접 저장 시켜놔서 테스트 가능.
+        // company 데이터 1개, user 데이터 1개 직접 저장 시켜놔서 테스트 가능.
         PostingsWriteRequest request = new PostingsWriteRequest(2L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
         String content = new ObjectMapper().writeValueAsString(request);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/api/postings/save")
+        ResultActions resultActions = mvc.perform(post("/api/postings/save/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
                 .accept(MediaType.APPLICATION_JSON)

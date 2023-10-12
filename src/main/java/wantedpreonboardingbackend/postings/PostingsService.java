@@ -4,5 +4,5 @@ import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 
 public interface PostingsService {
 
-    void postingsSave(PostingsWriteRequest request);
+    void postingsSave(Long userId, PostingsWriteRequest request);
 }

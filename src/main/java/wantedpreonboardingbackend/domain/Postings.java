@@ -34,11 +34,17 @@ public class Postings {
     @Column(length = 50, nullable = false)
     private String technology;
 
-    public Postings(Company company, String position, Long compensation, String contents, String technology) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+
+    public Postings(Company company, String position, Long compensation, String contents, String technology, User user) {
         this.company = company;
         this.position = position;
         this.compensation = compensation;
         this.contents = contents;
         this.technology = technology;
+        this.user = user;
     }
 }
