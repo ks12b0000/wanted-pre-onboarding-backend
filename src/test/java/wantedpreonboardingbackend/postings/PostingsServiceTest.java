@@ -1,5 +1,6 @@
 package wantedpreonboardingbackend.postings;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,11 +12,14 @@ import wantedpreonboardingbackend.company.CompanyRepository;
 import wantedpreonboardingbackend.domain.Company;
 import wantedpreonboardingbackend.domain.Postings;
 import wantedpreonboardingbackend.domain.User;
+import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 import wantedpreonboardingbackend.user.UserRepository;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -55,5 +59,37 @@ public class PostingsServiceTest {
         postingsService.postingsSave(user.getId(), request);
 
         // then
+    }
+
+    @Test
+    @DisplayName("채용 공고 수정 테스트")
+    void postingsUpdate() {
+        // 채용 공고 저장
+        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
+        Postings postings = new Postings(company, request.getPosition(), request.getCompensation(), request.getContents(), request.getTechnology(), user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(companyRepository.findById(request.getCompanyId())).thenReturn(Optional.of(company));
+        when(postingsRepository.save(any())).thenReturn(postings);
+
+        postingsService.postingsSave(user.getId(), request);
+
+        // given
+        PostingsUpdateRequest request2 = new PostingsUpdateRequest("백엔드 주니어 개발자1", 1000001L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은1..", "Python1");
+
+        // stub
+        when(postingsRepository.findById(postings.getId())).thenReturn(Optional.of(postings));
+
+        // when
+        postingsService.postingsUpdate(postings.getId(), user.getId() ,request2);
+
+        // then
+        assertAll(
+                () -> assertThat(postings.getPosition()).isEqualTo(request2.getPosition()),
+                () -> assertThat(postings.getCompensation()).isEqualTo(request2.getCompensation()),
+                () -> assertThat(postings.getContents()).isEqualTo(request2.getContents()),
+                () -> assertThat(postings.getTechnology()).isEqualTo(request2.getTechnology())
+        );
+
     }
 }

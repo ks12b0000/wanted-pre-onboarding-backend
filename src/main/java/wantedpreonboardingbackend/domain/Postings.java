@@ -47,4 +47,11 @@ public class Postings {
         this.technology = technology;
         this.user = user;
     }
+
+    public void update(String position, Long compensation, String contents, String technology) {
+        this.position = position;
+        this.compensation = compensation;
+        this.contents = contents;
+        this.technology = technology;
+    }
 }
