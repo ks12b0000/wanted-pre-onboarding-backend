@@ -12,17 +12,21 @@ import wantedpreonboardingbackend.company.CompanyRepository;
 import wantedpreonboardingbackend.domain.Company;
 import wantedpreonboardingbackend.domain.Postings;
 import wantedpreonboardingbackend.domain.User;
+import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 import wantedpreonboardingbackend.user.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
+import lombok.extern.slf4j.Slf4j;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@Slf4j
 @Transactional
 @ExtendWith(MockitoExtension.class)
 public class PostingsServiceTest {
@@ -113,4 +117,5 @@ public class PostingsServiceTest {
         // when
         postingsService.postingsDelete(postings.getId(), user.getId());
     }
+
 }

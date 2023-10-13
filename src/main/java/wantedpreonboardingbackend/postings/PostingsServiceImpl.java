@@ -7,10 +7,15 @@ import wantedpreonboardingbackend.company.CompanyRepository;
 import wantedpreonboardingbackend.domain.Company;
 import wantedpreonboardingbackend.domain.Postings;
 import wantedpreonboardingbackend.domain.User;
+import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 import wantedpreonboardingbackend.response.BaseException;
 import wantedpreonboardingbackend.user.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static wantedpreonboardingbackend.response.BaseExceptionStatus.*;
 
@@ -110,5 +115,30 @@ public class PostingsServiceImpl implements PostingsService{
         if (user.getId() != postings.getUser().getId()) throw new BaseException(WITHOUT_ACCESS_USER);
 
         postingsRepository.delete(postings);
+    }
+
+    /**
+     * 채용 공고 목록 조회
+     * @return
+     */
+    @Override
+    public List<PostingsListResponse> postingsList() {
+        List<Postings> list = postingsRepository.findAll();
+        return getPostingsList(list);
+    }
+
+    /**
+     * 채용 공고 목록 매핑
+     * @param postingsList
+     * @return
+     */
+    private List<PostingsListResponse> getPostingsList(List<Postings> postingsList){
+        List<PostingsListResponse> responses = new ArrayList<>();
+        for(int i = 0; i < postingsList.size(); i++){
+            Postings postings = postingsList.get(i);
+            Optional<Company> company = companyRepository.findById(postings.getCompany().getId());
+            responses.add(new PostingsListResponse(postings, company));
+        }
+        return responses;
     }
 }

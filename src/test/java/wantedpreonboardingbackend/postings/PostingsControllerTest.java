@@ -196,4 +196,20 @@ public class PostingsControllerTest {
                 .andExpect(jsonPath("code").value("4002"))
                 .andExpect(jsonPath("message").value("접근 권한이 없는 유저입니다."));
     }
+
+    @Test
+    @DisplayName("채용 공고 목록 조회 테스트")
+    void postingsList() throws Exception {
+        // when
+        ResultActions resultActions = mvc.perform(get("/api/postings/all/list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("1000"))
+                .andExpect(jsonPath("message").value("채용 공고 목록 조회에 성공했습니다."));
+    }
 }

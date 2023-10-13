@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 import wantedpreonboardingbackend.response.BaseResponse;
 import wantedpreonboardingbackend.response.ValidationSequence;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,5 +56,16 @@ public class PostingsController {
         postingsService.postingsDelete(postingsId, userId);
 
         return new BaseResponse("채용 공고 삭제에 성공했습니다.");
+    }
+
+    @Operation(summary = "채용 공고 조회 API", responses = {
+            @ApiResponse(responseCode = "200", description = "채용 공고 목록 조회에 성공했습니다.")
+    })
+    @Tag(name = "Postings")
+    @GetMapping("/api/postings/all/list")
+    public BaseResponse postingsList() {
+        List<PostingsListResponse> response = postingsService.postingsList();
+
+        return new BaseResponse("채용 공고 목록 조회에 성공했습니다.", response);
     }
 }
