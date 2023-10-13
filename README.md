@@ -183,7 +183,7 @@
   ```
 
 ##
-4. 채용공고 목록 조회
+4. 4-1 채용공고 목록 조회
     1. 요구사항 분석
         1. 채용 공고 전체 목록을 조회한다.
         2. 조회한 채용 공고에 맞는 회사를 조회 후 리스트 목록에 필요한 값을 매핑에서 나타내준다.
@@ -197,6 +197,44 @@
     {
         "code": 1000,
         "message": "채용 공고 목록 조회에 성공했습니다.",
+        "result": [
+            {
+                "id": 5,
+                "name": "원티드",
+                "country": "한국",
+                "region": "판교",
+                "position": "백엔드 주니어 개발자",
+                "compensation": 1000000,
+                "technology": "Python"
+            },
+            {
+                "id": 6,
+                "name": "원티드",
+                "country": "한국",
+                "region": "판교",
+                "position": "백엔드 주니어 개발자",
+                "compensation": 1000000,
+                "technology": "Python"
+            }
+        ]
+   }
+  ```
+
+##
+4. 4-2 채용공고 검색 조회
+    1. 요구사항 분석
+        1. 검색어에 맞는 채용 공고 목록을 조회한다.
+        2. 조회한 채용 공고에 맞는 회사를 조회 후 리스트 목록에 필요한 값을 매핑에서 나타내준다.
+    2. 구현 과정
+        1. [GET] /api/postings/search/list?keyword= 로 요청이 들어온다.
+        2. 검색어에 맞는 채용 공고 목록을 조회.
+        3. 조회한 채용 공고에 맞는 회사를 조회 후 PostingsListResponse에 맞는 값들을 매핑해서 나타내준다.
+ ```json
+  # [GET] /api/postings/search/list?keyword="Python"
+  # 성공
+    {
+        "code": 1000,
+        "message": "채용 공고 검색에 성공했습니다.",
         "result": [
             {
                 "id": 5,
