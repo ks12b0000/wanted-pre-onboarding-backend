@@ -92,4 +92,25 @@ public class PostingsServiceTest {
         );
 
     }
+
+    @Test
+    @DisplayName("채용 공고 삭제 테스트")
+    void postingsDelete() {
+        // 채용 공고 저장
+        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
+        Postings postings = new Postings(company, request.getPosition(), request.getCompensation(), request.getContents(), request.getTechnology(), user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(companyRepository.findById(request.getCompanyId())).thenReturn(Optional.of(company));
+        when(postingsRepository.save(any())).thenReturn(postings);
+
+        postingsService.postingsSave(user.getId(), request);
+
+        // given
+        // stub
+        when(postingsRepository.findById(postings.getId())).thenReturn(Optional.of(postings));
+
+        // when
+        postingsService.postingsDelete(postings.getId(), user.getId());
+    }
 }

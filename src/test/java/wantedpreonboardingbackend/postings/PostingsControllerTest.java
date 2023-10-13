@@ -9,15 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class PostingsControllerTest {
 
@@ -94,7 +95,7 @@ public class PostingsControllerTest {
         String content = new ObjectMapper().writeValueAsString(request);
 
         // when
-        ResultActions resultActions = mvc.perform(patch("/api/postings/1/1")
+        ResultActions resultActions = mvc.perform(patch("/api/postings/5/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
                 .accept(MediaType.APPLICATION_JSON)
@@ -127,9 +128,61 @@ public class PostingsControllerTest {
         );
 
         // 채용 공고 작성자와 다른 유저 아이디를 넣었을 경우.
-        ResultActions resultActions2 = mvc.perform(patch("/api/postings/1/2")
+        ResultActions resultActions2 = mvc.perform(patch("/api/postings/5/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("4004"))
+                .andExpect(jsonPath("message").value("존재하지 않는 채용 공고입니다."));
+
+        resultActions2.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("4002"))
+                .andExpect(jsonPath("message").value("접근 권한이 없는 유저입니다."));
+    }
+
+    @Test
+    @DisplayName("채용 공고 삭제 테스트")
+    void postingsDelete() throws Exception {
+        // given
+        // 채용 공고 저장
+        before();
+
+        // when
+        ResultActions resultActions = mvc.perform(delete("/api/postings/5/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("1000"))
+                .andExpect(jsonPath("message").value("채용 공고 삭제에 성공했습니다."));
+    }
+
+    @Test
+    @DisplayName("채용 공고 등록 실패 테스트")
+    void postingsDeleteFail() throws Exception {
+        // given
+        // 채용 공고 저장
+        before();
+
+        // when
+        // 존재하지 않는 채용 공고 넣었을 경우
+        ResultActions resultActions = mvc.perform(delete("/api/postings/0/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // 채용 공고 작성자와 다른 유저 아이디를 넣었을 경우.
+        ResultActions resultActions2 = mvc.perform(delete("/api/postings/5/2")
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
         );

@@ -91,4 +91,24 @@ public class PostingsServiceImpl implements PostingsService{
 
         return postings;
     }
+
+    /**
+     * 채용 공고 삭제
+     * @param postingsId
+     * @param userId
+     */
+    @Override
+    @Transactional
+    public void postingsDelete(Long postingsId, Long userId) {
+        // 유저 확인
+        User user = checkUser(userId);
+
+        // 채용 공고 확인
+        Postings postings = checkPostings(postingsId);
+
+        // 유저와 채용 공고 작성자랑 다를 경우 예외처리.
+        if (user.getId() != postings.getUser().getId()) throw new BaseException(WITHOUT_ACCESS_USER);
+
+        postingsRepository.delete(postings);
+    }
 }

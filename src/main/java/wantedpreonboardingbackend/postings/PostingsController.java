@@ -43,4 +43,15 @@ public class PostingsController {
 
         return new BaseResponse("채용 공고 수정에 성공했습니다.");
     }
+
+    @Operation(summary = "채용 공고 삭제 API", responses = {
+            @ApiResponse(responseCode = "200", description = "채용 공고 삭제에 성공했습니다.")
+    })
+    @Tag(name = "Postings")
+    @DeleteMapping("/api/postings/{postingsId}/{userId}")
+    public BaseResponse postingsDelete(@PathVariable Long postingsId, @PathVariable Long userId) {
+        postingsService.postingsDelete(postingsId, userId);
+
+        return new BaseResponse("채용 공고 삭제에 성공했습니다.");
+    }
 }
