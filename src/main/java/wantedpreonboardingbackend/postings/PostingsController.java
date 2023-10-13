@@ -68,4 +68,15 @@ public class PostingsController {
 
         return new BaseResponse("채용 공고 목록 조회에 성공했습니다.", response);
     }
+
+    @Operation(summary = "채용 공고 검색 API", responses = {
+            @ApiResponse(responseCode = "200", description = "채용 공고 검색에 성공했습니다.")
+    })
+    @Tag(name = "Postings")
+    @GetMapping("/api/postings/search/list")
+    public BaseResponse postingsSearchList(@RequestParam String keyword) {
+        List<PostingsListResponse> response = postingsService.postingsSearchList(keyword);
+
+        return new BaseResponse("채용 공고 검색에 성공했습니다.", response);
+    }
 }

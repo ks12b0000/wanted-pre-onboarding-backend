@@ -141,4 +141,15 @@ public class PostingsServiceImpl implements PostingsService{
         }
         return responses;
     }
+
+    /**
+     * 채용공고 사용 기술로 검색한 목록
+     * @param keyword
+     * @return
+     */
+    @Override
+    public List<PostingsListResponse> postingsSearchList(String keyword) {
+        List<Postings> list = postingsRepository.findByTechnologyContaining(keyword);
+        return getPostingsList(list);
+    }
 }

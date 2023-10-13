@@ -15,4 +15,6 @@ public interface PostingsService {
     void postingsDelete(Long postingsId, Long userId);
 
     List<PostingsListResponse> postingsList();
+
+    List<PostingsListResponse> postingsSearchList(String keyword);
 }

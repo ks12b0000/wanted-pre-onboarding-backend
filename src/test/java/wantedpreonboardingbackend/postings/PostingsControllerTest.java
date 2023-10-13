@@ -212,4 +212,22 @@ public class PostingsControllerTest {
                 .andExpect(jsonPath("code").value("1000"))
                 .andExpect(jsonPath("message").value("채용 공고 목록 조회에 성공했습니다."));
     }
+
+    @Test
+    @DisplayName("채용 공고 검색 테스트")
+    void postingsSearchList() throws Exception {
+        // given
+        String keyword = "Python";
+        // when
+        ResultActions resultActions = mvc.perform(get("/api/postings/search/list?keyword=" + keyword)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("1000"))
+                .andExpect(jsonPath("message").value("채용 공고 검색에 성공했습니다."));
+    }
 }
