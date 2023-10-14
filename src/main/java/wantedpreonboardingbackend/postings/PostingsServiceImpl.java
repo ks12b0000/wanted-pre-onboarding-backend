@@ -28,6 +28,7 @@ public class PostingsServiceImpl implements PostingsService{
 
     private final UserRepository userRepository;
 
+
     /**
      * 채용 공고 등록
      * @param request

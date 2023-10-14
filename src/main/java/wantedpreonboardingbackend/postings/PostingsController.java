@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import wantedpreonboardingbackend.postings.dto.PostingsDetailResponse;
-import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
-import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
-import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
+import wantedpreonboardingbackend.postings.dto.*;
 import wantedpreonboardingbackend.response.BaseResponse;
 import wantedpreonboardingbackend.response.ValidationSequence;
 

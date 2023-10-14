@@ -1,9 +1,6 @@
 package wantedpreonboardingbackend.postings;
 
-import wantedpreonboardingbackend.postings.dto.PostingsDetailResponse;
-import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
-import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
-import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
+import wantedpreonboardingbackend.postings.dto.*;
 
 import java.util.List;
 
@@ -20,4 +17,5 @@ public interface PostingsService {
     List<PostingsListResponse> postingsSearchList(String keyword);
 
     PostingsDetailResponse postingsDetail(Long postingsId);
+
 }
