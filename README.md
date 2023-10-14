@@ -1,12 +1,12 @@
 # wanted-pre-onboarding-backend
 
 ## ERD
-<img width="664" alt="스크린샷 2023-10-13 오후 4 26 18" src="https://github.com/ks12b0000/wanted-pre-onboarding-backend/assets/102012155/b26a6109-08ae-40af-b6d4-400ec83671ee">
+<img width="663" alt="스크린샷 2023-10-14 오후 7 02 24" src="https://github.com/ks12b0000/wanted-pre-onboarding-backend/assets/102012155/f1de9bac-3e4d-41ee-904f-6bd20d733ca9">
 
 - User : 회원 테이블(유저 아이디, 로그인 아이디, 패스워드, 이메일, 역할)
 - Company : 회사 테이블(회사 아이디, 이름, 국가, 지역, 유저 아이디)
 - Postings : 채용 공고 테이블(공고 아이디, 회사 아이디, 포지션, 보상금, 내용, 기술, 유저 아이디)
-- SupportHistory : 지원 내역 테이블(내역 아이디, 유저 아이디, 회사 아이디)
+- ApplyHistory : 지원 내역 테이블(내역 아이디, 유저 아이디, 회사 아이디)
 
 ## Stack
 - Java 11
