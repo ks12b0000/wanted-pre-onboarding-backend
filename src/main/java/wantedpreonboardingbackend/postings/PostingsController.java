@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import wantedpreonboardingbackend.postings.dto.PostingsDetailResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
@@ -58,7 +59,7 @@ public class PostingsController {
         return new BaseResponse("채용 공고 삭제에 성공했습니다.");
     }
 
-    @Operation(summary = "채용 공고 조회 API", responses = {
+    @Operation(summary = "채용 공고 목록 조회 API", responses = {
             @ApiResponse(responseCode = "200", description = "채용 공고 목록 조회에 성공했습니다.")
     })
     @Tag(name = "Postings")
@@ -78,5 +79,16 @@ public class PostingsController {
         List<PostingsListResponse> response = postingsService.postingsSearchList(keyword);
 
         return new BaseResponse("채용 공고 검색에 성공했습니다.", response);
+    }
+
+    @Operation(summary = "채용 공고 상세 조회 API", responses = {
+            @ApiResponse(responseCode = "200", description = "채용 공고 상세 조회에 성공했습니다.")
+    })
+    @Tag(name = "Postings")
+    @GetMapping("/api/postings/{postingsId}")
+    public BaseResponse postingsDetail(@PathVariable Long postingsId) {
+        PostingsDetailResponse response = postingsService.postingsDetail(postingsId);
+
+        return new BaseResponse("채용 공고 상세 조회에 성공했습니다.", response);
     }
 }

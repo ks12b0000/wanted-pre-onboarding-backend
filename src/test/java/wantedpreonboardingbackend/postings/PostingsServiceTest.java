@@ -12,12 +12,14 @@ import wantedpreonboardingbackend.company.CompanyRepository;
 import wantedpreonboardingbackend.domain.Company;
 import wantedpreonboardingbackend.domain.Postings;
 import wantedpreonboardingbackend.domain.User;
+import wantedpreonboardingbackend.postings.dto.PostingsDetailResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
 import wantedpreonboardingbackend.user.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -118,4 +120,82 @@ public class PostingsServiceTest {
         postingsService.postingsDelete(postings.getId(), user.getId());
     }
 
+    @Test
+    @DisplayName("채용 공고 목록 조회 테스트")
+    void postingsList() {
+        // 채용 공고 저장
+        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
+        Postings postings = new Postings(company, request.getPosition(), request.getCompensation(), request.getContents(), request.getTechnology(), user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(companyRepository.findById(request.getCompanyId())).thenReturn(Optional.of(company));
+        when(postingsRepository.save(any())).thenReturn(postings);
+
+        postingsService.postingsSave(user.getId(), request);
+
+        // given
+        List<Postings> list = new ArrayList<>();
+        list.add(postings);
+        // stub
+        when(postingsRepository.findAll()).thenReturn(list);
+        when(companyRepository.findById(list.get(0).getCompany().getId())).thenReturn(Optional.of(company));
+
+        // when
+        List<PostingsListResponse> response = postingsService.postingsList();
+
+        // then
+        assertThat(response).isNotNull();
+    }
+
+    @Test
+    @DisplayName("채용 공고 검색 테스트")
+    void postingsSearchList() {
+        // 채용 공고 저장
+        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
+        Postings postings = new Postings(company, request.getPosition(), request.getCompensation(), request.getContents(), request.getTechnology(), user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(companyRepository.findById(request.getCompanyId())).thenReturn(Optional.of(company));
+        when(postingsRepository.save(any())).thenReturn(postings);
+
+        postingsService.postingsSave(user.getId(), request);
+
+        // given
+        List<Postings> list = new ArrayList<>();
+        list.add(postings);
+        // stub
+        when(postingsRepository.findByTechnologyContaining(postings.getTechnology())).thenReturn(list);
+        when(companyRepository.findById(list.get(0).getCompany().getId())).thenReturn(Optional.of(company));
+
+        // when
+        List<PostingsListResponse> response = postingsService.postingsSearchList(postings.getTechnology());
+
+        // then
+        assertThat(response).isNotNull();
+    }
+
+    @Test
+    @DisplayName("채용 공고 상세 조회 테스트")
+    void postingsDetail() {
+        // 채용 공고 저장
+        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
+        Postings postings = new Postings(company, request.getPosition(), request.getCompensation(), request.getContents(), request.getTechnology(), user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(companyRepository.findById(request.getCompanyId())).thenReturn(Optional.of(company));
+        when(postingsRepository.save(any())).thenReturn(postings);
+
+        postingsService.postingsSave(user.getId(), request);
+
+        // given
+        // stub
+        when(postingsRepository.findById(postings.getId())).thenReturn(Optional.of(postings));
+        when(companyRepository.findById(postings.getCompany().getId())).thenReturn(Optional.of(company));
+
+        // when
+        PostingsDetailResponse response = postingsService.postingsDetail(postings.getId());
+
+        // then
+        assertThat(response).isNotNull();
+    }
 }

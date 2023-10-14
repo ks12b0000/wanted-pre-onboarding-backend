@@ -62,4 +62,40 @@ public class PostingsRepositoryTest {
         assertThat(postingsRepository.findById(savePostings.getId())).isEmpty();
     }
 
+    @Test
+    @DisplayName("채용 공고 목록 조회 테스트")
+    void postingsList() {
+        // given
+        // when
+        List<Postings> list = postingsRepository.findAll();
+
+        // then
+        assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("채용 공고 검색 테스트")
+    void postingsSearchList() {
+        // given
+        // when
+        List<Postings> list = postingsRepository.findByTechnologyContaining("Python");
+
+        // then
+        assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("채용 공고 상세 조회 테스트")
+    void postingsDetail() {
+        // given
+        Postings postings = new Postings(company, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python", user);
+
+        // when
+        Postings savePostings = postingsRepository.save(postings);
+        Optional<Postings> list = postingsRepository.findById(savePostings.getId());
+
+        // then
+        assertThat(list).isNotNull();
+    }
+
 }

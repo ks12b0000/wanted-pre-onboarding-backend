@@ -7,9 +7,7 @@ import wantedpreonboardingbackend.company.CompanyRepository;
 import wantedpreonboardingbackend.domain.Company;
 import wantedpreonboardingbackend.domain.Postings;
 import wantedpreonboardingbackend.domain.User;
-import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
-import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
-import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
+import wantedpreonboardingbackend.postings.dto.*;
 import wantedpreonboardingbackend.response.BaseException;
 import wantedpreonboardingbackend.user.UserRepository;
 
@@ -151,5 +149,22 @@ public class PostingsServiceImpl implements PostingsService{
     public List<PostingsListResponse> postingsSearchList(String keyword) {
         List<Postings> list = postingsRepository.findByTechnologyContaining(keyword);
         return getPostingsList(list);
+    }
+
+    /**
+     * 채용 공고 상세 조회
+     * @return
+     */
+    @Override
+    public PostingsDetailResponse postingsDetail(Long postingsId) {
+        // 채용 공고 확인
+        Postings postings = checkPostings(postingsId);
+        Company company = companyRepository.findById(postings.getCompany().getId()).orElseThrow(() -> new BaseException(NOT_EXIST_COMPANY));
+        // 회사가 올린 다른 채용 공고 찾기
+        List<Long> otherPostingsIdList = postingsRepository.findCompanyOtherPostingsId(company);
+
+        PostingsDetailResponse response = new PostingsDetailResponse(postings, company, otherPostingsIdList);
+
+        return response;
     }
 }

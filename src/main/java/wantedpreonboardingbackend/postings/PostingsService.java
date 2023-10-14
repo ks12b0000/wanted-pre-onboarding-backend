@@ -1,5 +1,6 @@
 package wantedpreonboardingbackend.postings;
 
+import wantedpreonboardingbackend.postings.dto.PostingsDetailResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsListResponse;
 import wantedpreonboardingbackend.postings.dto.PostingsUpdateRequest;
 import wantedpreonboardingbackend.postings.dto.PostingsWriteRequest;
@@ -17,4 +18,6 @@ public interface PostingsService {
     List<PostingsListResponse> postingsList();
 
     List<PostingsListResponse> postingsSearchList(String keyword);
+
+    PostingsDetailResponse postingsDetail(Long postingsId);
 }

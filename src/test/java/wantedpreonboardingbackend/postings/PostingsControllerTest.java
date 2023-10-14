@@ -25,21 +25,6 @@ public class PostingsControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @DisplayName("테스트에 필요한 채용 공고 저장")
-    void before() throws Exception {
-        // given
-        PostingsWriteRequest request = new PostingsWriteRequest(1L, "백엔드 주니어 개발자", 1000000L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..", "Python");
-        String content = new ObjectMapper().writeValueAsString(request);
-
-        // when
-        ResultActions resultActions = mvc.perform(post("/api/postings/save/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-        );
-    }
-
     @Test
     @DisplayName("채용 공고 등록 테스트")
     void postingsSave() throws Exception {
@@ -88,9 +73,6 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 수정 테스트")
     void postingsUpdate() throws Exception {
         // given
-        // 채용 공고 저장
-        before();
-
         PostingsUpdateRequest request = new PostingsUpdateRequest("백엔드 주니어 개발자1", 1000001L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은1..", "Python1");
         String content = new ObjectMapper().writeValueAsString(request);
 
@@ -112,9 +94,6 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 수정 실패 테스트")
     void postingsUpdateFail() throws Exception {
         // given
-        // 채용 공고 저장
-        before();
-
         PostingsUpdateRequest request = new PostingsUpdateRequest("백엔드 주니어 개발자1", 1000001L, "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은1..", "Python1");
         String content = new ObjectMapper().writeValueAsString(request);
 
@@ -149,9 +128,6 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 삭제 테스트")
     void postingsDelete() throws Exception {
         // given
-        // 채용 공고 저장
-        before();
-
         // when
         ResultActions resultActions = mvc.perform(delete("/api/postings/5/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -169,9 +145,6 @@ public class PostingsControllerTest {
     @DisplayName("채용 공고 등록 실패 테스트")
     void postingsDeleteFail() throws Exception {
         // given
-        // 채용 공고 저장
-        before();
-
         // when
         // 존재하지 않는 채용 공고 넣었을 경우
         ResultActions resultActions = mvc.perform(delete("/api/postings/0/1")
@@ -229,5 +202,22 @@ public class PostingsControllerTest {
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("code").value("1000"))
                 .andExpect(jsonPath("message").value("채용 공고 검색에 성공했습니다."));
+    }
+
+    @Test
+    @DisplayName("채용 공고 상세 조회 테스트")
+    void postingsDetail() throws Exception {
+        // given
+        // when
+        ResultActions resultActions = mvc.perform(get("/api/postings/5")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("1000"))
+                .andExpect(jsonPath("message").value("채용 공고 상세 조회에 성공했습니다."));
     }
 }
