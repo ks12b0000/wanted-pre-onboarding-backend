@@ -313,7 +313,7 @@
            - 채용 공고가 존재하지 않으면 예외처리.
         5. 채용 공고에 이미 지원한 유저라면 예외처리.
  ```json
-  # [GET] /api/postings/apply
+  # [POST] /api/postings/apply
   # 
     {
         "postingsId": 채용공고_id,
